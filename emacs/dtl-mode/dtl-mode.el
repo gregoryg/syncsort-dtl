@@ -68,7 +68,7 @@
   `((
      ;; stuff between "
      ;; ; : , ; { } =>  @ $ = are all special elements
-     ("\\${?[#?]?\\([[:alpha:]_][[:alnum:]_]*}?\\|0\\)" . font-lock-variable-name-face)
+     ("\\${?[#?]?\\([[:alpha:]_][[:alnum:]_]*}?\\|0\\)" . font-lock-variable-name-face) ;; $BLAH and ${BLAH}, but not %BLAH%
      ("\"\\.\\*\\?" . font-lock-string-face)
      ( ,(mapconcat 'identity dtl-commands "\\|") . font-lock-builtin-face)
      ;; ( ,(regexp-opt dtl-commands 'words) . font-lock-builtin-face)
