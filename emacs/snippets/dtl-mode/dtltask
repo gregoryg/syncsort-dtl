@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: dtltask
+# key: dtltask
+# --
+/DTL ${1:RUNTIMEVARIABLES OFF}
+/TASKTYPE ${2:$$(yas-choose-value '("COPY" "JOIN" "SORT" "MERGE" "AGGREGATE"))}
+/INFILE ${3:infile_name} ${4:STREAM CRLF} FIELDSEPARATOR ${5:X"2c"} ${6:LAYOUT ${7:layoutname}}
+/DELIMITEDRECORDLAYOUT $7 { ${8:f1 CHARACTER, f2 EN} }
+/OUTFILE ${9:outfile_name} $4 OVERWRITE
+${/COLLATINGSEQUENCE DEFAULT ASCII}
+$0
+/END

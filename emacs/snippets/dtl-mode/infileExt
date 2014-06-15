@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: infileExt
+# key: infileExt
+# --
+/INFILE ${file_name} ${EXPANDWILDCARDS} ${SERVERCONNECTION ${connection}} ${$$(yas-choose-value '("STREAM CRLF" "STLF" "STCR" "XML" "FIXED rec-len rec-align"))} ${$$(yas-choose-value '("ALIGNED2" "ALIGNED4" "UNALIGNED"))}

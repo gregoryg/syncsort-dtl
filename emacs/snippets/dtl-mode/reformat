@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: reformat
+# key: reformat
+# --
+/REFORMAT ${CONDITION ${condition_name}} CREATE LAYOUT ${target_layout_name} ${$$(yas-choose-value '("DELIMITED" "POSITIONAL" "XML"))} VALUES ${reformat_field} ${ALIAS ${target_field_name}}
+$0

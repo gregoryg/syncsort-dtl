@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: infile
+# key: infile
+# --
+/INFILE ${1:file_name.ext} ${2:$$(yas-choose-value '("STREAM CRLF" "STLF" "STCR" "XML" "FIXED"))} ${3:FIELDSEPARATOR X"2c"}

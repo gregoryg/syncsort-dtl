@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: logoptions
+# key: logoptions
+# --
+/LOGOPTIONS ${TIMEMASK (MM0/DD0/YEAR HH0:MI0:SE0)} ${STATISTICS OFF} ${STATUS OFF} ${TASKID OFF}
+$0
+

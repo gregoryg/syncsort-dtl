@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: infileL
+# key: infileL
+# --
+/INFILE ${file_name} ${EXPANDWILDCARDS} ${SERVERCONNECTION ${connection}} ${ALIAS ${alias}}
+$0

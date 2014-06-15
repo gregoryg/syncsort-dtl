@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: dtl
+# key: dtl
+# --
+/DTL ${1:$$(yas-choose-value '("RUNTIMEVARIABLES ON" "RUNTIMEVARIABLES OFF"))}

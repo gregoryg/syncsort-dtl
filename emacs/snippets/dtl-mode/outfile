@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: outfile
+# key: outfile
+# --
+/OUTFILE ${file_name} ${$$(yas-choose-value '("STREAM CRLF" "STLF" "STCR" "XML" "FIXED rec-len rec-align"))} ${$$(yas-choose-value '("OVERWRITE" "APPEND"))}
