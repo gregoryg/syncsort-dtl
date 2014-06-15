@@ -1,2 +1,16 @@
 * Overview
   + This project is for files related to Syncsort DTL data flow language
+** Files
+   emacs/dtl-mode -- contains the major mode for Syncsort DTL
+   emacs/snippets -- various useful snippets for use with yasnippet
+* Directories
+** dtl-mode
+  + This mode provides syntax highlighting for DTL commands, keywords, task types,
+    and environment variables.  It implements automatic indentation.  It allows the user
+    to run the current task or job, and uses the compilation buffer to navigate errors
+    and warnings.
+** snippets
+  + The emacs/snippets directory contains several snippets for use with the yasnippet.el
+    package.
+* Future enhancements
+  + I welcome contributions, please send me a message if you would like to help.
