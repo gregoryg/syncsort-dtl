@@ -122,13 +122,20 @@
   "Syntax table for dtl-mode")
 
 (defun dtl-run ()
-  (interactive)
+  "Run current buffer task or job in a compilation buffer"
+  ;; TODO: if no /TASKTYPE, assume job and use dmxjob as command
+ (interactive)
   (save-some-buffers)
   (save-excursion
-    (let* ((fname (buffer-file-name))
+    (let* ((cmd (save-excursion
+		  (beginning-of-buffer)
+		  (if (search-forward "/TASKTYPE" nil t)
+		      "dmexpress"
+		    "dmxjob")))
+	   (fname (buffer-file-name))
 	   (fdir (file-name-directory fname)))
       (cd fdir)
-      (set (make-local-variable 'compile-command) (format ". ./job-envvars.sh && dmexpress /run %s" fname))
+      (set (make-local-variable 'compile-command) (format ". ./job-envvars.sh && %s /run %s" cmd fname))
       ;; (call-interactively 'compile)
       (compile compile-command nil)
       )))
