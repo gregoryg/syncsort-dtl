@@ -3,13 +3,27 @@
 ** Files
    emacs/dtl-mode -- contains the major mode for Syncsort DTL
    emacs/snippets -- various useful snippets for use with yasnippet
-* Directories
-** dtl-mode
-  + This mode provides syntax highlighting for DTL commands, keywords, task types,
-    and environment variables.  It implements automatic indentation.  It allows the user
-    to run the current task or job, and uses the compilation buffer to navigate errors
-    and warnings.
-** snippets
+* Files
+** emacs/dtl-mode/dtl-mode.el
+  This mode provides syntax highlighting for DTL commands, keywords, task types, and
+  environment variables.  It implements automatic indentation.  It allows the user to run
+  the current task or job, and uses the compilation buffer to navigate errors and
+  warnings.
+  
+** emacs/dtl-mode/dtl-mode.dict
+   A dictionary of commands, keywords and functions to use with the auto-complete
+   package. 
+
+   To use this, place something like the following in your init file:
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'dtl-mode-hook 
+               (lambda ()
+                 (when (require 'auto-complete nil t)
+                   (add-to-list 'ac-dictionary-files "~/.emacs.d/elpa/auto-complete-20140605.1908/dict/dtl-mode")
+                   (ac-config-default))))
+     
+   #+END_SRC
+** emacs/snippets
   + The emacs/snippets directory contains several snippets for use with the yasnippet.el
     package.
 * Future enhancements

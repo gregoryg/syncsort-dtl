@@ -49,10 +49,6 @@
     map)
   "Keymap for DTL major mode")
 
-;; (when (not dtl-mode-map)
-;;   (setq dtl-mode-map (make-sparse-keymap))
-;;   (define-key dtl-mode-map (kbd "C-c C-c") 'dtl-run))
-
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.dtl$" . dtl-mode))
 
@@ -64,17 +60,22 @@
 (defconst dtl-types
   '("COPY" "MERGE" "AGGREGATE" "JOIN" "SORT"))
 
+(defconst dtl-functions
+  '("Abs" "CharacterLengthOf" "CRC32" "DateAdd" "DateDiff" "DateLastDay" "DatePart" "Encode" "EvaluateExpressionList" "Extract" "FindContainedValue" "GetExternalFunctionValue" "GetUserDefinedValue" "IfCompares" "IfContainsAny" "IfEqualsAny" "IfMatches" "IfRecordJoined" "IfRecordOrigin" "IfThenElse" "InString" "IsValidDate" "IsValidNumber" "LengthOf" "Lookup" "MD5" "Mod" "Pad" "Pow" "Rand" "RegExReplace" "Replace" "Round" "SetUserDefinedValue" "SourceFullName" "SourceName" "Sqrt" "Substring" "TargetRecordNumber" "ToDate" "Today" "ToFile" "ToLower" "ToNumber" "ToText" "ToUpper" "Translate" "Trim" "Truncate" "URLDecode"))
+
+
 (defvar dtl-font-lock-defaults
   `((
      ;; stuff between "
      ;; ; : , ; { } =>  @ $ = are all special elements
-     ("\\${?[#?]?\\([[:alpha:]_][[:alnum:]_]*}?\\|0\\)" . font-lock-variable-name-face) ;; $BLAH and ${BLAH}, but not %BLAH%
+     ("\\(\\${?\\|%\\)\\([[:alpha:]_][[:alnum:]_]*[}%]?\\)" . font-lock-variable-name-face) ;; $BLAH, ${BLAH}, or %BLAH%
      ("\"\\.\\*\\?" . font-lock-string-face)
-     ( ,(mapconcat 'identity dtl-commands "\\|") . font-lock-builtin-face)
+     ( ,(mapconcat 'identity dtl-commands "\\|") . font-lock-keyword-face)
      ;; ( ,(regexp-opt dtl-commands 'words) . font-lock-builtin-face)
      ( ,(regexp-opt dtl-keywords 'words) . font-lock-constant-face)
+     ( ,(regexp-opt dtl-functions 'words) . font-lock-function-name-face)
      ( ,(regexp-opt dtl-types 'words) . font-lock-type-face)
-     (":\\|;\\|=\\|\\!=\\|/" . font-lock-keyword-face)
+     (":\\|;\\|=\\|\\!=\\|/" . font-lock-builtin-face)
      )))
 
 ;; /DTL and /END are indent level 0
@@ -82,7 +83,6 @@
 ;; if { appears in a previous line without a closing }, cur-indent += 1
 ;; if } appears in current line without an opening {. cur-indent -= 1
 ;; TODO: line continuations should indent past command (?)
-
 (defun dtl-indent-line ()
   "Indent current line as DTL code."
   (interactive)
@@ -123,13 +123,13 @@
 
 (defun dtl-run ()
   "Run current buffer task or job in a compilation buffer"
-  ;; TODO: if no /TASKTYPE, assume job and use dmxjob as command
  (interactive)
   (save-some-buffers)
   (save-excursion
     (let* ((cmd (save-excursion
 		  (beginning-of-buffer)
-		  (if (search-forward "/TASKTYPE" nil t)
+		  (setq case-fold-search t)
+		  (if (re-search-forward "^[ \t]*/TASKTYPE" nil t)
 		      "dmexpress"
 		    "dmxjob")))
 	   (fname (buffer-file-name))
