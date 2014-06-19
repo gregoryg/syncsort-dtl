@@ -1,0 +1,11 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: dtljob
+# key: dtljob
+# binding: direct-keybinding
+# --
+/DTL
+/TASK FILE ${1: task1.dtl}
+/TASK FILE ${2: task2.dtl}
+/FLOW $1 $2
+/MAPREDUCE FLOW $1 $2
+/END

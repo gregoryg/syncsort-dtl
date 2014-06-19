@@ -2,7 +2,6 @@
 # name: dtltask
 # key: dtltask
 # --
-/* -*- mode: dtl; -*-
 /DTL
 /TASKTYPE ${2:$$(yas-choose-value '("COPY" "JOIN" "SORT" "MERGE" "AGGREGATE"))}
 /INFILE ${3:infile_name} ${4:STREAM CRLF} FIELDSEPARATOR ${5:X"2c"} ${6:LAYOUT ${7:layoutname}}
