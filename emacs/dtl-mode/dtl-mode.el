@@ -70,8 +70,6 @@
 
 (defvar dtl-font-lock-defaults
   `((
-     ;; stuff between "
-     ;; ; : , ; { } =>  @ $ = are all special elements
      ("\\(\\${?\\|%\\)\\([[:alpha:]_][[:alnum:]_]*[}%]?\\)" . font-lock-variable-name-face) ;; $BLAH, ${BLAH}, or %BLAH%
      ("\"\\.\\*\\?" . font-lock-string-face)
      ( ,(mapconcat 'identity dtl-commands "\\|") . font-lock-keyword-face)
