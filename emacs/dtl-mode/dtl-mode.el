@@ -50,10 +50,10 @@
   (let ((map (make-keymap)))
     (define-key map "\C-j" 'newline-and-indent)
     (define-key map (kbd "C-c C-c") 'dtl-run)
+    (define-key map (kbd "M-RET") 'insert-new-line-and-indent)
     map)
   "Keymap for DTL major mode")
 
-;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.dtl$" . dtl-mode))
 
 (defconst dtl-commands '("/COLLATINGSEQUENCE" "/CONDITION" "/DATADICTIONARY" "/DATASIZE" "DBCONNECTION" "/DBINPUT" "/DELIMITEDRECORDLAYOUT" "/DTL" "/END" "/FILE" "/FILTER" "/GROUPBY" "/INFILE" "/INMAXRECORDLENGTH" "/JOINKEYS" "/KEYS" "/LOGOPTIONS" "/MEMORY" "/NOPROMPT" "/NULLIF" "/OUTFILE" "/PADBYTE" "/RECORDLAYOUT" "/REFORMAT" "/SERVERCONNECTION" "/STABLE" "/SUMMARY" "/TASKDOCUMENTATION" "/TASKTYPE" "/VALUE" "/WORKSPACE" "/CUSTOMTASK" "/DEFAULTFLOW" "/DTL" "/END" "/FLOW" "/MAPREDUCE" "/SUBJOB" "/TASK"))
@@ -110,6 +110,12 @@
     (if cur-level
 	(indent-line-to (* cur-level dtl-indent-level)))))
 
+(defun insert-new-line-and-indent ()
+  (interactive)
+  (newline)
+  (dtl-indent-line))
+
+;;;###autoload
 (defvar dtl-mode-syntax-table
   (let ((dtl-mode-syntax-table (make-syntax-table)))
     
