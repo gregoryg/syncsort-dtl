@@ -5,10 +5,25 @@
    emacs/snippets -- various useful snippets for use with yasnippet
 * Files
 ** emacs/dtl-mode/dtl-mode.el
+*** Mode capabilities
   This mode provides syntax highlighting for DTL commands, keywords, task types, and
   environment variables.  It implements automatic indentation.  It allows the user to run
-  the current task or job, and uses the compilation buffer to navigate errors and
+  the current job or task, and uses the compilation buffer to navigate errors and
   warnings.
+
+*** Run jobs in a compilation buffer
+  In order to make use of the compilation buffer for running DTL jobs and tasks, you
+  should make a file =envvars.sh= executable bash script in your project directory for
+  any environment variables your DTL code makes use of. 
+
+  Example =envvars.sh= (env vars should be exported in the script)
+  #+BEGIN_SRC shell-script
+    #!/bin/bash
+    export HDFS_SERVER=`hostname`
+    export SRCDIR=/apache2
+  #+END_SRC
+
+  When you want to run the job or task, type =C-c C-c=
   
 ** emacs/dtl-mode/dtl-mode.dict
    A dictionary of commands, keywords and functions to use with the auto-complete
@@ -18,13 +33,26 @@
    #+BEGIN_SRC emacs-lisp
      (add-hook 'dtl-mode-hook 
                (lambda ()
-                 (when (require 'auto-complete nil t)
-                   (add-to-list 'ac-dictionary-files "~/.emacs.d/elpa/auto-complete-20140605.1908/dict/dtl-mode")
-                   (ac-config-default))))
+                 (when (and 
+                        (boundp 'dtl-ac-dict-file) 
+                        (file-exists-p dtl-ac-dict-file) 
+                        (require 'auto-complete nil t))
+                   (add-to-list 'ac-dictionary-files dtl-ac-dict-file)
+                   (ac-config-default)
+                   (auto-complete-mode 1))))
      
    #+END_SRC
 ** emacs/snippets
-  + The emacs/snippets directory contains several snippets for use with the yasnippet.el
-    package.
+   The emacs/snippets directory contains several snippets for use with the yasnippet.el
+   package.
+
+   To enable the snippets, add the emacs/snippets directory to one of your snippets
+   locations, then add the following to your init file:
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'dtl-mode-hook
+               lambda()
+               (when (require 'yasnippet nil t)
+                 (yas-minor-mode 1)))
+   #+END_SRC
 * Future enhancements
   + I welcome contributions, please send me a message if you would like to help.
