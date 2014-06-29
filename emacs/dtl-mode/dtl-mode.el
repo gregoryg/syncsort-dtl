@@ -39,7 +39,7 @@
   :group 'dtl)
 
 (defcustom dtl-ac-dict-file "~/emacs/dtl-mode/dtl-mode.dict"
-  "Auto-complete dictionary file with DTL commands, keywords and function names.  Should be distributed with dtl-mode"
+  "Auto-complete dictionary file with DTL commands, keywords and function names.  Should be distributed with `dtl-mode'."
   :type 'file
   :safe 'file
   :group 'dtl)
@@ -52,7 +52,7 @@
     (define-key map (kbd "C-c C-c") 'dtl-run)
     (define-key map (kbd "M-RET") 'insert-new-line-and-indent)
     map)
-  "Keymap for DTL major mode")
+  "Keymap for DTL major mode.")
 
 (add-to-list 'auto-mode-alist '("\\.dtl$" . dtl-mode))
 
@@ -111,7 +111,8 @@
 	(indent-line-to (* cur-level dtl-indent-level)))))
 
 (defun insert-new-line-and-indent ()
-  (interactive)
+  "Insert a new line and indent to correct position."
+(interactive)
   (newline)
   (dtl-indent-line))
 
@@ -126,14 +127,14 @@
     ;; (modify-syntax-entry ?/ ". 124b" dtl-mode-syntax-table)
     ;; (modify-syntax-entry ?* ". 23" dtl-mode-syntax-table)
     ;; (modify-syntax-entry ?\n "> b" dtl-mode-syntax-table)
-	;; define comment for this style: “/* … */” 
+	;; define comment for this style: “/* … */”
 	(modify-syntax-entry ?\/ ". 14" dtl-mode-syntax-table)
 	(modify-syntax-entry ?* ". 23" dtl-mode-syntax-table)
     dtl-mode-syntax-table)
-  "Syntax table for dtl-mode")
+  "Syntax table for `dtl-mode'.")
 
 (defun dtl-run ()
-  "Run current task or job in a compilation buffer"
+  "Run current task or job in a compilation buffer."
  (interactive)
   (save-some-buffers)
   (save-excursion
@@ -155,7 +156,7 @@
 
 
 (defun dtl-mode ()
-  "Major mode for editing Syncsort DTL dataflow language files"
+  "Major mode for editing Syncsort DTL dataflow language files."
   (interactive)
   (kill-all-local-variables)
   (set-syntax-table dtl-mode-syntax-table)
@@ -163,7 +164,11 @@
   ;; set up font lock
   (set (make-local-variable 'font-lock-defaults) dtl-font-lock-defaults)
   ;; register our indentation function
-  (set (make-local-variable 'indent-line-function) 'dtl-indent-line)  
+  (set (make-local-variable 'indent-line-function) 'dtl-indent-line)
+  ;; C-style comments
+  (set (make-local-variable 'comment-start) "/*")
+  (set (make-local-variable 'comment-end) "*/")
+  ;; set up compilation buffer to run DTL jobs and tasks
   (require 'compile)
   (require 'cl) ;; needed for 'pushnew'
   (pushnew '(dtl "^DMExpress : (\\([A-Z]+\\))\\|at line \\([0-9]+\\) of \\(.+\\)" 3 2) compilation-error-regexp-alist-alist)
@@ -174,4 +179,6 @@
 
 (provide 'dtl-mode)
 
-;; dtl-mode.el ends here
+(provide 'dtl-mode)
+
+;;; dtl-mode.el ends here
