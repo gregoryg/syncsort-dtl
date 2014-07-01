@@ -4,6 +4,8 @@
    emacs/dtl-mode -- contains the major mode for Syncsort DTL
    emacs/snippets -- various useful snippets for use with yasnippet
 * Files
+** dtl-projects
+   Example DTL projects showing various ETL processes.  Separate README in that directory.
 ** emacs/dtl-mode/dtl-mode.el
 *** Mode capabilities
   This mode provides syntax highlighting for DTL commands, keywords, task types, and

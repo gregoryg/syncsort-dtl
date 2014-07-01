@@ -1,7 +1,7 @@
 * dtl-projects
 ** Projects implementing Syncsort DTL 
 
-The code contained in this repo implement various ETL-style processes using Syncsort's
+The code contained in this directory implement various ETL-style processes using Syncsort's
 DTL data flow language.
 
 ** Contents
