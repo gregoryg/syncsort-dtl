@@ -1,0 +1,83 @@
+/DTL RUNTIMEVARIABLES ON
+    /TASKTYPE JOIN UNPAIRED SORTEDOUTPUT
+    /INFILE $MAPRED_TEMP_DATA_DIR/PreviousFile.txt STLF FIELDSEPARATOR X"09" LAYOUT lineitem_prev_join_layout
+    /JOINKEYS lineitem_prev_join_layout.L_ORDERKEY, lineitem_prev_join_layout.L_PARTKEY, lineitem_prev_join_layout.L_SUPPKEY
+    /INFILE $MAPRED_TEMP_DATA_DIR/CurrentFile.txt STLF FIELDSEPARATOR X"09" LAYOUT lineitem_curr_join_layout
+    /JOINKEYS lineitem_curr_join_layout.L_ORDERKEY, lineitem_curr_join_layout.L_PARTKEY, lineitem_curr_join_layout.L_SUPPKEY
+    /OUTFILE CDCResults STLF OVERWRITE FIELDSEPARATOR x"09"
+    /FILTER RETAINIF Changed
+    /REFORMAT CONDITION Deleted CREATE LAYOUT whatever-rl DELIMITED VALUES 
+        ActionCode,
+	lineitem_curr_join_layout.L_ORDERKEY,
+	lineitem_curr_join_layout.L_PARTKEY,
+	lineitem_curr_join_layout.L_SUPPKEY,
+	lineitem_curr_join_layout.L_LINENUMBER,
+	lineitem_curr_join_layout.L_QUANTITY,
+	lineitem_curr_join_layout.L_EXTENDEDPRICE,
+	lineitem_curr_join_layout.L_DISCOUNT,
+	lineitem_curr_join_layout.L_RETURNFLAG,
+	lineitem_curr_join_layout.L_LINESTATUS,
+	lineitem_curr_join_layout.field10,
+	lineitem_curr_join_layout.L_SHIPDATE,
+	lineitem_curr_join_layout.L_COMMITDATE,
+	lineitem_curr_join_layout.L_RECEIPTDATE,
+	lineitem_curr_join_layout.L_SHIPINSTRUCT,
+	lineitem_curr_join_layout.L_SHIPMODE,
+	lineitem_curr_join_layout.L_COMMENT
+    /REFORMAT CONDITION NewOrUpdated CREATE LAYOUT whatever-rl2 DELIMITED VALUES 
+        ActionCode,
+	lineitem_prev_join_layout.L_ORDERKEY,
+	lineitem_prev_join_layout.L_PARTKEY,
+	lineitem_prev_join_layout.L_SUPPKEY,
+	lineitem_prev_join_layout.L_LINENUMBER,
+	lineitem_prev_join_layout.L_QUANTITY,
+	lineitem_prev_join_layout.L_EXTENDEDPRICE,
+	lineitem_prev_join_layout.L_DISCOUNT,
+	lineitem_prev_join_layout.L_RETURNFLAG,
+	lineitem_prev_join_layout.L_LINESTATUS,
+	lineitem_prev_join_layout.field10,
+	lineitem_prev_join_layout.L_SHIPDATE,
+	lineitem_prev_join_layout.L_COMMITDATE,
+	lineitem_prev_join_layout.L_RECEIPTDATE,
+	lineitem_prev_join_layout.L_SHIPINSTRUCT,
+	lineitem_prev_join_layout.L_SHIPMODE,
+	lineitem_prev_join_layout.L_COMMENT
+
+    /COLLATINGSEQUENCE DEFAULT ASCII
+    /DATADICTIONARY filecdc-metadata.dtl DMEXPRESS
+    /SERVERCONNECTION "$HDFS_SERVER" HDFS ALIAS HDFSConnection
+    /VALUE RestOfCurrentRecord ToText(lineitem_curr_join_layout.L_LINENUMBER) || 
+    ToText(lineitem_curr_join_layout.L_QUANTITY) || 
+    ToText(lineitem_curr_join_layout.L_EXTENDEDPRICE) || 
+    ToText(lineitem_curr_join_layout.L_DISCOUNT) || 
+    ToText(lineitem_curr_join_layout.L_RETURNFLAG) || 
+    lineitem_curr_join_layout.L_LINESTATUS || 
+    lineitem_curr_join_layout.field10 || 
+    ToText(lineitem_curr_join_layout.L_SHIPDATE) || 
+    ToText(lineitem_curr_join_layout.L_COMMITDATE) || 
+    ToText(lineitem_curr_join_layout.L_RECEIPTDATE) || 
+    lineitem_curr_join_layout.L_SHIPINSTRUCT || 
+    lineitem_curr_join_layout.L_SHIPMODE || 
+    lineitem_curr_join_layout.L_COMMENT
+    /VALUE RestOfPreviousRecord ToText(lineitem_prev_join_layout.L_LINENUMBER) || 
+    ToText(lineitem_prev_join_layout.L_QUANTITY) || 
+    ToText(lineitem_prev_join_layout.L_EXTENDEDPRICE) || 
+    ToText(lineitem_prev_join_layout.L_DISCOUNT) || 
+    ToText(lineitem_prev_join_layout.L_RETURNFLAG) || 
+    lineitem_prev_join_layout.L_LINESTATUS || 
+    lineitem_prev_join_layout.field10 || 
+    ToText(lineitem_prev_join_layout.L_SHIPDATE) || 
+    ToText(lineitem_prev_join_layout.L_COMMITDATE) || 
+    ToText(lineitem_prev_join_layout.L_RECEIPTDATE) || 
+    lineitem_prev_join_layout.L_SHIPINSTRUCT || 
+    lineitem_prev_join_layout.L_SHIPMODE || 
+    lineitem_prev_join_layout.L_COMMENT
+    /VALUE ActionCode IfThenElse(New, 'N',
+    IfThenElse(Deleted, 'D',
+    IfThenElse(Updated, 'U', '')))
+    /CONDITION Deleted IfRecordJoined("UnmatchedLeft")
+    /CONDITION New IfRecordJoined("UnmatchedRight")
+    /CONDITION Updated IfRecordJoined("Matched") and RestOfPreviousRecord != RestOfCurrentRecord
+    /CONDITION NewOrUpdated New OR Updated
+    /CONDITION Changed New Or Updated Or Deleted
+/END

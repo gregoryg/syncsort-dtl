@@ -1,0 +1,19 @@
+* dtl-projects
+** Projects implementing Syncsort DTL 
+
+The code contained in this repo implement various ETL-style processes using Syncsort's
+DTL data flow language.
+
+** Contents
+*** UCA
+    Use Case Accelerators (UCA) are provided by Syncsort to use as templates for a wide
+    range of ETL processing on and off Hadoop.  A subset of these are shown here in DTL
+**** FileCDC
+     File-based Change Data Capture, implemented as a Hadoop mapreduce job.
+*** examples
+    Examples taken from the DTL documentation.
+*** join
+    Example of a simple join of two files.
+*** sessionize-weblogs
+    A more complex Hadoop mapreduce job which takes Apache weblogs, marks session
+    boundaries within a 30-minute time frame, and aggregates the result by session.

@@ -1,0 +1,22 @@
+/* This job takes Apache web logs and assigns session IDs based on IP and timestamp over a given period - say, 30 minutes  */
+/* it then rolls up (aggregates by session ID */
+/* sequence of processing: */
+/*   Mapper:  M10-read-weblogs.dtl reads logs, filters out bad records, adds Hadoop partition number, converts timestamp to UTC, sorts output by ip and timestamp */
+/*            M20-pre-sessionize.dtl assigns "provisional" sessionID for pre-aggregation in mapper */
+/*            M30-combiner.dtl rolls up by provisional sessionID */
+/*            M90-sort-by-partition.dtl sorts mapper output by partition-num */
+/*   Reducer: R10-sessionize-weblogs.dtl assign final sessionID to pre-aggregated records  */
+/*            R20-rollup-by-session.dtl Final rollup, add reducer-id to sessionID so that session ID will be unique across all records */
+/DTL
+    /TASK FILE M10-read-weblogs.dtl
+    /TASK FILE M20-pre-sessionize.dtl
+    /TASK FILE M30-combiner.dtl
+    /TASK FILE M90-sort-by-partition.dtl
+    /TASK FILE R10-sessionize-weblogs.dtl
+    /TASK FILE R20-rollup-by-session.dtl
+    /FLOW M10-read-weblogs.dtl M20-pre-sessionize.dtl
+    /FLOW M20-pre-sessionize.dtl M30-combiner.dtl
+    /FLOW M30-combiner.dtl M90-sort-by-partition.dtl
+    /MAPREDUCE FLOW M90-sort-by-partition.dtl R10-sessionize-weblogs.dtl
+    /FLOW R10-sessionize-weblogs.dtl R20-rollup-by-session.dtl
+/END

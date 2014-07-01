@@ -1,0 +1,11 @@
+/DTL
+    /TASKTYPE MERGE
+    /KEYS recordlayout1.date_field desc, recordlayout1.id desc
+    /INFILE inMergeTask_01.dat Stream CRLF FIELDSEPARATOR "," LAYOUT recordlayout1
+    /INFILE inMergeTask_02.dat Stream CRLF FIELDSEPARATOR "," LAYOUT recordlayout1
+    /DELIMITEDRECORDLAYOUT recordlayout1 {active_flag EN, 
+        id EN, 
+        start_date DATETIME (MM0/DD0/YEAR), 
+    name CHARACTER}
+    /OUTFILE outMergeTask.dat Stream CRLF OVERWRITE
+/END

@@ -1,0 +1,38 @@
+/DTL
+    /TASKTYPE AGGREGATE
+    /INFILE ${WORKSPACE_DIR}/mapper-20-out.dat STLF FIELDSEPARATOR X"09" LAYOUT mapper-20-layout
+    /* /INPIPE ${WORKSPACE_DIR}/sorted-logs.dat STLF FIELDSEPARATOR X"09" LAYOUT sorted-logs--layout */
+    /GROUPBY FIELDS sessionID
+    /SUMMARY any-ip ANY ip
+    /SUMMARY any-utc-timestamp ANY utc-timestamp
+    /SUMMARY total-size TOTAL size
+    /SUMMARY any-user-agent ANY user-agent
+    /SUMMARY any-country-name ANY country-name
+    /SUMMARY any-partition-num ANY partition-num
+    /SUMMARY any-referrer-url ANY referrer-url
+    /SUMMARY count COUNT EN 10
+    /DELIMITEDRECORDLAYOUT mapper-20-layout {
+	partition-num EN,
+	sessionID EN,
+	ip,
+	utc-timestamp DATETIME (YEARMM0DD0 HH0MI0SE0),
+	size EN,
+	referrer-url,
+	user-agent,
+	country-name
+    }
+    /OUTFILE ${WORKSPACE_DIR}/mapper-30.dat STLF OVERWRITE FIELDSEPARATOR X"09" NOTENCLOSED
+    /REFORMAT CREATE LAYOUT mapper-30-layout DELIMITED VALUES 
+    any-partition-num EN,
+    sessionID EN,
+    any-ip,
+    any-utc-timestamp (YEARMM0DD0 HH0MI0SE0),
+    count EN,
+    total-size EN,
+    any-referrer-url,
+    any-user-agent,
+    any-country-name
+    /VALUE unique-session-id "$DMX_HADOOP_REDUCER_ID" || "-" || ToText(sessionID)
+    /COLLATINGSEQUENCE DEFAULT ASCII
+    
+/END

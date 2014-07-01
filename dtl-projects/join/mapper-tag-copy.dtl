@@ -1,0 +1,17 @@
+/DTL
+    /TASKTYPE SORT
+    /INFILE $CJDIR/week1.csv STLF FIELDSEPARATOR "," ENCLOSEDBY """" LAYOUT weeklyinfiles-rl 
+    /INFILE ${CJDIR}/week2.csv STLF FIELDSEPARATOR "," ENCLOSEDBY """" LAYOUT weeklyinfiles-rl
+    /KEYS partition-num
+    /DELIMITEDRECORDLAYOUT weeklyinfiles-rl {f1, f2, f3 }
+    /OUTFILE $WORKSPACE/tagged-mapper-out.dat STLF FIELDSEPARATOR "	" OVERWRITE
+    /REFORMAT CREATE LAYOUT tagged-mapper-rl DELIMITED EXPORT VALUES
+        partition-num,
+        join-side,
+        f1 ALIAS id,
+        f2,
+        f3
+    /CONDITION join-side-cond  SourceName() CT 'week2' 
+    /VALUE join-side IfThenElse(join-side-cond, "R", "L")
+    /VALUE partition-num CRC32(f1, ToNumber("$DMX_HADOOP_NUM_REDUCERS"))
+/END

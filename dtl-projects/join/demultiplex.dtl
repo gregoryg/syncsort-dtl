@@ -1,0 +1,13 @@
+/DTL
+  /TASKTYPE COPY
+  /INFILE $WORKSPACE/tagged-mapper-out.dat STLF FIELDSEPARATOR "	" LAYOUT tagged-mapper-rl
+  /DELIMITEDRECORDLAYOUT tagged-mapper-rl {join-side, id, f2, f3}
+  /OUTFILE $WORKSPACE/left-side.dat STLF FIELDSEPARATOR "	" OVERWRITE
+  /FILTER RETAINIF is-left-side
+  /REFORMAT CREATE LAYOUT join-records-rl DELIMITED VALUES id, f2, f3
+  /OUTFILE $WORKSPACE/right-side.dat STLF FIELDSEPARATOR "	" OVERWRITE
+  /FILTER RETAINIF is-right-side
+  /REFORMAT CREATE LAYOUT join-records2-rl DELIMITED VALUES id, f2, f3
+  /CONDITION is-left-side join-side = "L"
+  /CONDITION is-right-side not is-left-side
+/END

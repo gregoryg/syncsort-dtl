@@ -1,0 +1,37 @@
+/DTL
+    /TASKTYPE COPY
+    /INFILE ${WORKSPACE_DIR}/sorted-logs.dat STLF FIELDSEPARATOR X"09" LAYOUT sorted-logs-layout
+    /DELIMITEDRECORDLAYOUT sorted-logs-layout {
+	partition-num EN,
+	ip,
+	utc-timestamp DATETIME (YEARMM0DD0 HH0MI0SE0),
+	size EN,
+	referrer-url,
+	user-agent,
+	country-name
+    }
+    /OUTFILE ${WORKSPACE_DIR}/mapper-20-out.dat STLF OVERWRITE FIELDSEPARATOR X"09" NOTENCLOSED
+    /REFORMAT CREATE LAYOUT mapper-20-layout DELIMITED VALUES
+	partition-num EN,
+	sessionID EN,
+	ip,
+	utc-timestamp (YEARMM0DD0 HH0MI0SE0),
+	size EN,
+	referrer-url,
+	user-agent,
+	country-name
+    /COLLATINGSEQUENCE DEFAULT ASCII
+    /CONDITION isNewSession ip != GetUserDefinedValue("lastIP") or DateDiff(utc-timestamp, ToDate(GetUserDefinedValue("lastTimestamp"), "YEARMM0DD0 HH0MI0SE0"), "minute") > 10
+    /VALUE getSessionID ToNumber(GetUserDefinedValue("sessionID"))
+    /VALUE incrementSessionID ToNumber(SetUserDefinedValue("sessionID", getSessionID + 1))
+    /VALUE sessionID EvaluateExpressionList(
+    IfThenElse(isNewSession,incrementSessionID,0),
+    setValues,
+    getSessionID
+    )
+    /VALUE setValues EvaluateExpressionList(
+    SetUserDefinedValue("lastIP", ip),
+    SetUserDefinedValue("lastTimestamp", utc-timestamp)
+    )
+    
+/END

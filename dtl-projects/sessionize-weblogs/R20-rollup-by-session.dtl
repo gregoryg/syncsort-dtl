@@ -1,0 +1,34 @@
+/DTL
+    /TASKTYPE AGGREGATE
+    /INFILE ${WORKSPACE_DIR}/sessionized-weblogs.dat STLF FIELDSEPARATOR X"09" LAYOUT sessionized-weblogs-layout
+    /GROUPBY FIELDS sessionID
+    /SUMMARY any-ip ANY ip
+    /SUMMARY any-utc-timestamp ANY utc-timestamp
+    /SUMMARY total-size TOTAL size
+    /SUMMARY any-user-agent ANY user-agent
+    /SUMMARY any-country-name ANY country-name
+    /SUMMARY total-count TOTAL count
+    /DELIMITEDRECORDLAYOUT sessionized-weblogs-layout { 
+	sessionID EN,
+	ip,
+	utc-timestamp DATETIME (YEARMM0DD0 HH0MI0SE0),
+	size EN,
+	referrer-url,
+	user-agent,
+	count EN,
+	country-name
+    }
+    /OUTFILE rollup-by-session.dat SERVERCONNECTION HDFSConnection STLF OVERWRITE
+    /SERVERCONNECTION "$HDFS_SERVER" HDFS ALIAS HDFSConnection
+    /REFORMAT CREATE LAYOUT rollup-by-session-layout DELIMITED VALUES 
+    unique-session-id,
+    any-ip,
+    any-utc-timestamp,
+    total-count EN,
+    total-size EN,
+    any-user-agent,
+    any-country-name
+    /VALUE unique-session-id "$DMX_HADOOP_REDUCER_ID" || "-" || ToText(sessionID)
+    /COLLATINGSEQUENCE DEFAULT ASCII
+    
+/END

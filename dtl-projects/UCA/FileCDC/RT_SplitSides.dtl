@@ -1,0 +1,47 @@
+/DTL RUNTIMEVARIABLES ON
+    /TASKTYPE COPY
+    /INFILE $MAPRED_TEMP_DATA_DIR/MapOutput.txt STLF FIELDSEPARATOR X"09" LAYOUT MapOutputLayout
+    /OUTFILE $MAPRED_TEMP_DATA_DIR/PreviousFile.txt STLF OVERWRITE FIELDSEPARATOR x"09"
+    /FILTER RETAINIF isCurrentLineItem
+    /REFORMAT MAPTO LAYOUT lineitem_prev_join_layout MAPPINGS
+	lineitem_prev_join_layout.L_ORDERKEY = MapOutputLayout.L_ORDERKEY,
+	lineitem_prev_join_layout.L_PARTKEY = MapOutputLayout.L_PARTKEY,
+	lineitem_prev_join_layout.L_SUPPKEY = MapOutputLayout.L_SUPPKEY,
+	lineitem_prev_join_layout.L_LINENUMBER = MapOutputLayout.L_LINENUMBER,
+	lineitem_prev_join_layout.L_QUANTITY = MapOutputLayout.L_QUANTITY,
+	lineitem_prev_join_layout.L_EXTENDEDPRICE = MapOutputLayout.L_EXTENDEDPRICE,
+	lineitem_prev_join_layout.L_DISCOUNT = MapOutputLayout.L_DISCOUNT,
+	lineitem_prev_join_layout.L_RETURNFLAG = MapOutputLayout.L_RETURNFLAG,
+	lineitem_prev_join_layout.L_LINESTATUS = MapOutputLayout.L_LINESTATUS,
+	lineitem_prev_join_layout.field10 = MapOutputLayout.field10,
+	lineitem_prev_join_layout.L_SHIPDATE = MapOutputLayout.L_SHIPDATE,
+	lineitem_prev_join_layout.L_COMMITDATE = MapOutputLayout.L_COMMITDATE,
+	lineitem_prev_join_layout.L_RECEIPTDATE = MapOutputLayout.L_RECEIPTDATE,
+	lineitem_prev_join_layout.L_SHIPINSTRUCT = MapOutputLayout.L_SHIPINSTRUCT,
+	lineitem_prev_join_layout.L_SHIPMODE = MapOutputLayout.L_SHIPMODE,
+	lineitem_prev_join_layout.L_COMMENT = MapOutputLayout.L_COMMENT
+    /OUTFILE $MAPRED_TEMP_DATA_DIR/CurrentFile.txt STLF OVERWRITE FIELDSEPARATOR x"09"
+    /REFORMAT MAPTO LAYOUT lineitem_prev_join_layout MAPPINGS
+	lineitem_prev_join_layout.L_ORDERKEY = MapOutputLayout.L_ORDERKEY,
+	lineitem_prev_join_layout.L_PARTKEY = MapOutputLayout.L_PARTKEY,
+	lineitem_prev_join_layout.L_SUPPKEY = MapOutputLayout.L_SUPPKEY,
+	lineitem_prev_join_layout.L_LINENUMBER = MapOutputLayout.L_LINENUMBER,
+	lineitem_prev_join_layout.L_QUANTITY = MapOutputLayout.L_QUANTITY,
+	lineitem_prev_join_layout.L_EXTENDEDPRICE = MapOutputLayout.L_EXTENDEDPRICE,
+	lineitem_prev_join_layout.L_DISCOUNT = MapOutputLayout.L_DISCOUNT,
+	lineitem_prev_join_layout.L_RETURNFLAG = MapOutputLayout.L_RETURNFLAG,
+	lineitem_prev_join_layout.L_LINESTATUS = MapOutputLayout.L_LINESTATUS,
+	lineitem_prev_join_layout.field10 = MapOutputLayout.field10,
+	lineitem_prev_join_layout.L_SHIPDATE = MapOutputLayout.L_SHIPDATE,
+	lineitem_prev_join_layout.L_COMMITDATE = MapOutputLayout.L_COMMITDATE,
+	lineitem_prev_join_layout.L_RECEIPTDATE = MapOutputLayout.L_RECEIPTDATE,
+	lineitem_prev_join_layout.L_SHIPINSTRUCT = MapOutputLayout.L_SHIPINSTRUCT,
+	lineitem_prev_join_layout.L_SHIPMODE = MapOutputLayout.L_SHIPMODE,
+	lineitem_prev_join_layout.L_COMMENT = MapOutputLayout.L_COMMENT
+
+    /FILTER RETAINIF isPreviousLineItem
+    /COLLATINGSEQUENCE DEFAULT ASCII
+    /DATADICTIONARY filecdc-metadata.dtl DMEXPRESS
+    /CONDITION isCurrentLineItem MapOutputLayout.RecordState = "C"
+    /CONDITION isPreviousLineItem MapOutputLayout.RecordState = "P"
+/END

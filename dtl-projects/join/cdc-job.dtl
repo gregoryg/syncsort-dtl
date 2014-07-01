@@ -1,0 +1,8 @@
+/DTL
+    /TASK FILE mapper-tag-copy.dtl
+    /TASK FILE demultiplex.dtl
+    /TASK FILE cdc-join.dtl
+    /FLOW mapper-tag-copy.dtl demultiplex.dtl
+    /FLOW demultiplex.dtl cdc-join.dtl
+   /MAPREDUCE FLOW mapper-tag-copy.dtl demultiplex.dtl
+/END

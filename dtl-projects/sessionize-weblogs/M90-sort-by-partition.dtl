@@ -1,0 +1,29 @@
+/DTL
+    /TASKTYPE SORT
+    /INFILE ${WORKSPACE_DIR}/mapper-30.dat STLF FIELDSEPARATOR X"09" LAYOUT sorted-logs-layout
+    /KEYS partition-num
+/* /DATADICTIONARY read-weblogs.dtl DMEXPRESS INCLUDE LAYOUTS (sorted-logs-layout) */
+    /DELIMITEDRECORDLAYOUT sorted-logs-layout {
+	partition-num EN,
+	sessionID EN,
+	ip,
+	utc-timestamp DATETIME (YEARMM0DD0 HH0MI0SE0),
+	count EN,
+	size EN,
+	referrer-url,
+	user-agent,
+	country-name
+    }
+    /OUTFILE ${WORKSPACE_DIR}/sorted-logs-by-partition.dat STLF OVERWRITE
+    /REFORMAT CREATE LAYOUT sorted-logs-by-partition-layout DELIMITED VALUES
+    partition-num EN,
+    ip,
+    utc-timestamp (YEARMM0DD0 HH0MI0SE0),
+    count EN,
+    size EN,
+    referrer-url,
+    user-agent,
+    country-name
+    /COLLATINGSEQUENCE DEFAULT ASCII
+    /VALUE count 1
+/END

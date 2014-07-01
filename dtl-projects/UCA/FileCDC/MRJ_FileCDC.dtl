@@ -1,0 +1,8 @@
+/DTL
+    /TASK FILE MT_SortData.dtl
+    /TASK FILE RT_SplitSides.dtl
+    /TASK FILE RT_PerformJoinCDC_SingleOutput.dtl
+    /FLOW MT_SortData.dtl RT_SplitSides.dtl
+    /FLOW RT_SplitSides.dtl RT_PerformJoinCDC_SingleOutput.dtl 
+    /MAPREDUCE FLOW MT_SortData.dtl RT_SplitSides.dtl
+/END

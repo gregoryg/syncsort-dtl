@@ -1,0 +1,20 @@
+/DTL
+    /TASKTYPE JOIN UNPAIRED  SORTEDOUTPUT
+    /INFILE $WORKSPACE/left-side.dat STLF FIELDSEPARATOR "	" LAYOUT join-records-rl
+    /JOINKEYS  join-records-rl.id
+    /INFILE $WORKSPACE/right-side.dat STLF FIELDSEPARATOR "	" LAYOUT join-records2-rl
+    /JOINKEYS  join-records2-rl.id
+    /DELIMITEDRECORDLAYOUT join-records-rl 
+    { 
+        id,
+	f2, 
+	f3
+    }
+    /DELIMITEDRECORDLAYOUT join-records2-rl {id, f2, f3}
+    /OUTFILE $WORKSPACE/final-join.dat STLF FIELDSEPARATOR "	" OVERWRITE
+    /REFORMAT CREATE LAYOUT final-join-rl DELIMITED EXPORT VALUES gort, join-records-rl.id, join-records2-rl.f2, join-records2-rl.f3
+    /CONDITION isUpdate IfRecordJoined("Matched") AND join-records-rl.id != join-records2-rl.id
+    /CONDITION isDelete IfRecordJoined("UnmatchedLeft")
+    /CONDITION isInsert IfRecordJoined("UnmatchedRight")
+    /VALUE gort IfThenElse(isUpdate, "U ", IfThenElse(isDelete, "D ", IfThenElse(isInsert, "I ", "NC"))) /* NC for Not Changed */
+/END

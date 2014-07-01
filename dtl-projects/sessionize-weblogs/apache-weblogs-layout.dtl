@@ -1,0 +1,15 @@
+/DTL
+    /DELIMITEDRECORDLAYOUT apache-weblogs-layout  { 
+	/* This is definitely a comment */
+	ip NOTNULLABLE, /* This is a comment */
+	identd-user NOTNULLABLE,
+	auth-username NOTNULLABLE,
+	server-time datetime (DD0/MN/YEAR:HH0:MI0:SE0 ZH0ZM0) NOTNULLABLE,
+	request NOTNULLABLE,
+	status-code EN NULLIFEMPTY,
+	size EN NULLIFEMPTY,
+	referrer-url NOTNULLABLE,
+	user-agent NOTNULLABLE,
+	country-name NOTNULLABLE
+    }
+/END
