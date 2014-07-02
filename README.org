@@ -1,8 +1,9 @@
 * Overview
-  + This project is for files related to Syncsort DTL data flow language
-** Files
-   emacs/dtl-mode -- contains the major mode for Syncsort DTL
-   emacs/snippets -- various useful snippets for use with yasnippet
+  This project is for files related to Syncsort DTL data flow language
+
+   + emacs/dtl-mode -- contains the major mode for Syncsort DTL.   [[https://www.youtube.com/watch?v=Eq33x2oQpnA][demo video]]
+   + emacs/snippets -- various useful snippets for use with yasnippet
+
 * Files
 ** dtl-projects
    Example DTL projects showing various ETL processes.  Separate README in that directory.

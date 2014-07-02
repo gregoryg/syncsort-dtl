@@ -85,6 +85,7 @@
 ;; if { appears in a previous line without a closing }, cur-indent += 1
 ;; if } appears in current line without an opening {. cur-indent -= 1
 ;; TODO: line continuations should indent past command (?)
+;; TODO: Comments should align to first following non-comment line
 (defun dtl-indent-line ()
   "Indent current line as DTL code."
   (interactive)
@@ -139,7 +140,7 @@
   (save-some-buffers)
   (save-excursion
     (let* ((cmd (save-excursion
-		  (beginning-of-buffer)
+		  (goto-char (point-min))
 		  (setq case-fold-search t)
 		  (if (re-search-forward "^[ \t]*/TASKTYPE" nil t)
 		      "dmexpress"

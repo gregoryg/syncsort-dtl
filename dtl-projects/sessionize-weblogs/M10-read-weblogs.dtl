@@ -6,7 +6,7 @@
     /SERVERCONNECTION "$HDFS_SERVER" HDFS ALIAS HDFSConnection
     /DATADICTIONARY apache-weblogs-layout.dtl DMEXPRESS INCLUDE LAYOUTS ALL
     /OUTFILE ${WORKSPACE_DIR}/sorted-logs.dat STLF OVERWRITE FIELDSEPARATOR X"09" NOTENCLOSED
-    /* /OUTPIPE - STLF FIELDSEPARATOR X"09" NOTENCLOSED */
+/* /OUTPIPE - STLF FIELDSEPARATOR X"09" NOTENCLOSED */
     /FILTER RETAINIF isGoodLogRecord
     /REFORMAT CREATE LAYOUT sorted-logs-layout DELIMITED VALUES 
     partition-num EN,
@@ -16,8 +16,8 @@
     referrer-url,
     user-agent,
     country-name
-    /* /OUTFILE ${WORKSPACE_DIR}/check-parse.dat STLF OVERWRITE FIELDSEPARATOR X"09" NOTENCLOSED */
-    /* /REFORMAT CREATE LAYOUT check-parse-layout DELIMITED VALUES ip, server-time, request, status-code, size */
+/* /OUTFILE ${WORKSPACE_DIR}/check-parse.dat STLF OVERWRITE FIELDSEPARATOR X"09" NOTENCLOSED */
+/* /REFORMAT CREATE LAYOUT check-parse-layout DELIMITED VALUES ip, server-time, request, status-code, size */
     /COLLATINGSEQUENCE DEFAULT ASCII
     /VALUE partition-num CRC32(ip, ToNumber("$DMX_HADOOP_NUM_REDUCERS"))
     /VALUE utc-timestamp DateAdd(server-time, -1 * DatePart(server-time, "timezonehour"), "hour")
