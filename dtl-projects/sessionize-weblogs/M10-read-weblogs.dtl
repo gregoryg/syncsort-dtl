@@ -1,31 +1,31 @@
-/* This task reads apache weblog records, assigns a Hadoop partition number, and normalizes the timestamp to be in Coordinated Universal Time (UTC) */
+    /* This task reads apache weblog records, assigns a Hadoop partition number, and normalizes the timestamp to be in Coordinated Universal Time (UTC) */
 /DTL
     /TASKTYPE SORT
     /KEYS ip, utc-timestamp
     /INFILE ${APACHE_WEBLOGS_DIR}/SAMPLE-access_1.log SERVERCONNECTION HDFSConnection STLF FIELDSEPARATOR " " ENCLOSEDBY """" ENCLOSEDBY "[", "]" LAYOUT apache-weblogs-layout
     /SERVERCONNECTION "$HDFS_SERVER" HDFS ALIAS HDFSConnection
     /DATADICTIONARY apache-weblogs-layout.dtl DMEXPRESS INCLUDE LAYOUTS ALL
+    /* /OUTFILE ${WORKSPACE_DIR}/check-parse.dat STLF OVERWRITE FIELDSEPARATOR X"09" NOTENCLOSED */
+    /* /REFORMAT CREATE LAYOUT check-parse-layout DELIMITED VALUES ip, server-time, request, status-code, size */
     /OUTFILE ${WORKSPACE_DIR}/sorted-logs.dat STLF OVERWRITE FIELDSEPARATOR X"09" NOTENCLOSED
-/* /OUTPIPE - STLF FIELDSEPARATOR X"09" NOTENCLOSED */
+	/* /OUTPIPE - STLF FIELDSEPARATOR X"09" NOTENCLOSED */
     /FILTER RETAINIF isGoodLogRecord
-    /REFORMAT CREATE LAYOUT sorted-logs-layout DELIMITED VALUES 
-    partition-num EN,
-    ip,
-    utc-timestamp (YEARMM0DD0 HH0MI0SE0),
-    size EN,
-    referrer-url,
-    user-agent,
-    country-name
-/* /OUTFILE ${WORKSPACE_DIR}/check-parse.dat STLF OVERWRITE FIELDSEPARATOR X"09" NOTENCLOSED */
-/* /REFORMAT CREATE LAYOUT check-parse-layout DELIMITED VALUES ip, server-time, request, status-code, size */
+    /REFORMAT CREATE LAYOUT sorted-logs-layout DELIMITED VALUES
+	partition-num EN,
+	ip,
+	utc-timestamp (YEARMM0DD0 HH0MI0SE0),
+	size EN,
+	referrer-url,
+	user-agent,
+	country-name
     /COLLATINGSEQUENCE DEFAULT ASCII
     /VALUE partition-num CRC32(ip, ToNumber("$DMX_HADOOP_NUM_REDUCERS"))
     /VALUE utc-timestamp DateAdd(server-time, -1 * DatePart(server-time, "timezonehour"), "hour")
     /VALUE request-protocol Extract(request, '^([A-Z]*)', 'character', '\1')
     /CONDITION isGoodLogRecord request NC '\\' 
-    and referrer-url NC "url="
-    and request NC "gaJsHost"
-    and request  NC '/\\' 
-    and isValidRequestType
+	and referrer-url NC "url="
+	and request NC "gaJsHost"
+	and request  NC '/\\' 
+	and isValidRequestType
     /CONDITION isValidRequestType IfEqualsAny(request-protocol, "LIST", "CONNECT,GET,HEAD,OPTIONS,POST,PUT")
 /END

@@ -1,0 +1,22 @@
+/DTL
+    /TASK FILE  phase4_join_3years.dxt
+    /TASK FILE  Join_CMP_CVP.dxt
+    /TASK FILE phase0_create_fiscal_metadata.dxt
+    /TASK FILE phase4_rollup_3years.dxt
+    /TASK FILE phase2_Baby_Registry_Flag.dxt
+    /TASK FILE phase2_Birthday_Club_Flag.dxt
+    /TASK FILE Dedup_CMP_CMV_on_household.dxt
+    /TASK FILE phase3_Mailable_Flag.dxt
+    /TASK FILE phase3_EMailable_Flag.dxt
+    /TASK FILE phase4_final_join.dxt
+    /TASK FILE phase4_final_agg.dxt
+    /FLOW phase4_join_3years.dxt  phase4_rollup_3years.dxt
+    /FLOW Join_CMP_CVP.dxt Dedup_CMP_CMV_on_household.dxt
+    /FLOW phase4_rollup_3years.dxt phase4_final_join.dxt
+    /FLOW phase2_Baby_Registry_Flag.dxt phase4_final_join.dxt
+    /FLOW phase2_Birthday_Club_Flag.dxt phase4_final_join.dxt
+    /FLOW Dedup_CMP_CMV_on_household.dxt phase4_final_join.dxt
+    /FLOW phase3_Mailable_Flag.dxt phase4_final_join.dxt
+    /FLOW phase3_EMailable_Flag.dxt phase4_final_join.dxt
+    /FLOW phase4_final_join.dxt phase4_final_agg.dxt
+/END

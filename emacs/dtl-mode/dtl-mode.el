@@ -84,23 +84,27 @@
 ;; default for everything following a /DTL is indent level 1
 ;; if { appears in a previous line without a closing }, cur-indent += 1
 ;; if } appears in current line without an opening {. cur-indent -= 1
-;; TODO: line continuations should indent past command (?)
+;; line continuations should indent past previous command
 ;; TODO: Comments should align to first following non-comment line
 (defun dtl-indent-line ()
   "Indent current line as DTL code."
   (interactive)
   (beginning-of-line)
   (let ((cur-level 1) (not-indented t))
-    (cond ((looking-at "^[ \t]*\\(/DTL\\|/END\\|\\/\\*\\)")
+    (cond ((looking-at "^[ \t]*\\(/DTL\\|/END\\)")
 	   (setq cur-level 0))
-	  ((looking-at "^[^{\n]*}")
+	  ;; ((looking-at "^[^{\n]*}")
+	  ;;  (setq cur-level 1))
+	  ((looking-at "^[ \t]*\\/[^*]")
 	   (setq cur-level 1))
+	  ((looking-at "^[ \t]*[a-z]")
+	   (setq cur-level 2))
 	  (t
 	   (save-excursion
 	     (while (and not-indented (not (bobp)))
 	       (forward-line -1)
 	       (cond
-		((looking-at "^[^{\n]*{[^}\n]*$") ;; opening brace without closing brace on line
+		((looking-at "^[^{\n]*{[^}\n]*") ;; opening brace without closing brace on line
 		 (progn
 		   (setq cur-level (+ cur-level 1))
 		   (setq not-indented nil)))
@@ -116,6 +120,37 @@
 (interactive)
   (newline)
   (dtl-indent-line))
+
+(defun dtl-generate-following-task ()
+  "Generate next task based on target of current task."
+  (interactive)
+  (let ((bogus-name "next-task.dtl"))
+
+    (save-excursion
+      (goto-char (point-min))
+      (when (re-search-forward "^\s*/OUTFILE\s+\\([^ ]+\\)\\(.\\|\n\\)+\s*/REFORMAT\s+.+?LAYOUT\s+\\([-a-z_0-9]+\\)\s+.+VALUES\\(\\(.\\|\n\\)+?\\)/[a-z]" (point-max) nil)
+	(let ((pwd default-directory)
+	      (outfile-name (match-string-no-properties 1))
+	      (buffer-name (format "%s.dtx" (uuid-string)))
+	      (layout-name (match-string-no-properties 3))
+	      (target-field-list (match-string-no-properties 4)))
+	  (message (format "Layout name is %s" layout-name))
+	  (set-buffer (get-buffer-create buffer-name))
+	  (cd pwd)
+	  (delete-region (point-min) (point-max))
+	  (goto-char (point-min))
+	  (insert (format "/DTL\n/TASKTYPE COPY\n/INFILE %s STLF FIELDSEPARATOR X\"09\" NOTENCLOSED LAYOUT %s\n/DELIMITEDRECORDLAYOUT %s { %s }\n/END"
+			  outfile-name layout-name layout-name target-field-list))
+	  (dtl-mode)
+	  (goto-char (point-min))
+	  (set-mark-command nil)
+	  (goto-char (point-max))
+	  (indent-for-tab-command)
+	  (switch-to-buffer buffer-name)
+	  ))
+      ) ;; save-excursion
+    ) ;; let
+  ) ;; function dtl-generate-following-task
 
 ;;;###autoload
 (defvar dtl-mode-syntax-table

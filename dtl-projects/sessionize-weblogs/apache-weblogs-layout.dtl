@@ -11,5 +11,5 @@
 	referrer-url NOTNULLABLE,
 	user-agent NOTNULLABLE,
 	country-name NOTNULLABLE
-    }
+	}
 /END
