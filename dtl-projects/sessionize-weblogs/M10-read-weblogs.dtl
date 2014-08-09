@@ -10,14 +10,14 @@
     /OUTFILE ${WORKSPACE_DIR}/sorted-logs.dat STLF OVERWRITE FIELDSEPARATOR X"09" NOTENCLOSED
 	/* /OUTPIPE - STLF FIELDSEPARATOR X"09" NOTENCLOSED */
     /FILTER RETAINIF isGoodLogRecord
-    /REFORMAT CREATE LAYOUT sorted-logs-layout DELIMITED VALUES
+    /REFORMAT CREATE LAYOUT sorted-logs-layout DELIMITED EXPORT VALUES
 	partition-num EN,
 	ip,
 	utc-timestamp (YEARMM0DD0 HH0MI0SE0),
 	size EN,
 	referrer-url,
 	user-agent,
-	country-name
+	country-code
     /COLLATINGSEQUENCE DEFAULT ASCII
     /VALUE partition-num CRC32(ip, ToNumber("$DMX_HADOOP_NUM_REDUCERS"))
     /VALUE utc-timestamp DateAdd(server-time, -1 * DatePart(server-time, "timezonehour"), "hour")

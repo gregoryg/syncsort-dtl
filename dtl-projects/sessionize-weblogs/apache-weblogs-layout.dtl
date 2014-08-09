@@ -10,6 +10,6 @@
 	size EN NULLIFEMPTY,
 	referrer-url NOTNULLABLE,
 	user-agent NOTNULLABLE,
-	country-name NOTNULLABLE
+	country-code NOTNULLABLE
 	}
 /END

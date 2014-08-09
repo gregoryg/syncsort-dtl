@@ -12,7 +12,7 @@
 	size EN,
 	referrer-url,
 	user-agent,
-	country-name
+	country-code
     }
     /OUTFILE ${WORKSPACE_DIR}/sorted-logs-by-partition.dat STLF OVERWRITE
     /REFORMAT CREATE LAYOUT sorted-logs-by-partition-layout DELIMITED VALUES
@@ -23,7 +23,7 @@
     size EN,
     referrer-url,
     user-agent,
-    country-name
+    country-code
     /COLLATINGSEQUENCE DEFAULT ASCII
     /VALUE count 1
 /END

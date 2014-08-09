@@ -6,7 +6,7 @@
     /SUMMARY any-utc-timestamp ANY utc-timestamp
     /SUMMARY total-size TOTAL size
     /SUMMARY any-user-agent ANY user-agent
-    /SUMMARY any-country-name ANY country-name
+    /SUMMARY any-country-code ANY country-code
     /SUMMARY total-count TOTAL count
     /DELIMITEDRECORDLAYOUT sessionized-weblogs-layout { 
 	sessionID EN,
@@ -16,7 +16,7 @@
 	referrer-url,
 	user-agent,
 	count EN,
-	country-name
+	country-code
     }
     /OUTFILE rollup-by-session.dat SERVERCONNECTION HDFSConnection STLF OVERWRITE
     /SERVERCONNECTION "$HDFS_SERVER" HDFS ALIAS HDFSConnection
@@ -27,7 +27,7 @@
     total-count EN,
     total-size EN,
     any-user-agent,
-    any-country-name
+    any-country-code
     /VALUE unique-session-id "$DMX_HADOOP_REDUCER_ID" || "-" || ToText(sessionID)
     /COLLATINGSEQUENCE DEFAULT ASCII
     

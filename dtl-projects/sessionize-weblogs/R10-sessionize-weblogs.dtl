@@ -10,7 +10,7 @@
 	size EN,
 	referrer-url,
 	user-agent,
-	country-name
+	country-code
     }
     /OUTFILE ${WORKSPACE_DIR}/sessionized-weblogs.dat STLF OVERWRITE
     /REFORMAT CREATE LAYOUT sessionized-weblogs-layout DELIMITED VALUES 
@@ -21,7 +21,7 @@
     referrer-url,
     user-agent,
     count EN,
-    country-name
+    country-code
     /COLLATINGSEQUENCE DEFAULT ASCII
     /* Determine if there is a key break (new user == new IP) */ 
     /CONDITION isNewSession ip != GetUserDefinedValue("lastIP") or DateDiff(utc-timestamp, ToDate(GetUserDefinedValue("lastTimestamp"), "YEARMM0DD0 HH0MI0SE0"), "minute") > 10

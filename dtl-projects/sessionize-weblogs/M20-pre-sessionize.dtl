@@ -1,15 +1,16 @@
 /DTL
     /TASKTYPE COPY
     /INFILE ${WORKSPACE_DIR}/sorted-logs.dat STLF FIELDSEPARATOR X"09" LAYOUT sorted-logs-layout
-    /DELIMITEDRECORDLAYOUT sorted-logs-layout {
-	partition-num EN,
-	ip,
-	utc-timestamp DATETIME (YEARMM0DD0 HH0MI0SE0),
-	size EN,
-	referrer-url,
-	user-agent,
-	country-name
-    }
+    /DATADICTIONARY M10-read-weblogs.dtl DMEXPRESS INCLUDE LAYOUTS (sorted-logs-layout)
+    /* /DELIMITEDRECORDLAYOUT sorted-logs-layout { */
+    /* 	partition-num EN, */
+    /* 	ip, */
+    /* 	utc-timestamp DATETIME (YEARMM0DD0 HH0MI0SE0), */
+    /* 	size EN, */
+    /* 	referrer-url, */
+    /* 	user-agent, */
+    /* 	country-code */
+    /* } */
     /OUTFILE ${WORKSPACE_DIR}/mapper-20-out.dat STLF OVERWRITE FIELDSEPARATOR X"09" NOTENCLOSED
     /REFORMAT CREATE LAYOUT mapper-20-layout DELIMITED VALUES
 	partition-num EN,
@@ -19,7 +20,7 @@
 	size EN,
 	referrer-url,
 	user-agent,
-	country-name
+	country-code
     /COLLATINGSEQUENCE DEFAULT ASCII
     /CONDITION isNewSession ip != GetUserDefinedValue("lastIP") or DateDiff(utc-timestamp, ToDate(GetUserDefinedValue("lastTimestamp"), "YEARMM0DD0 HH0MI0SE0"), "minute") > 10
     /VALUE getSessionID ToNumber(GetUserDefinedValue("sessionID"))
