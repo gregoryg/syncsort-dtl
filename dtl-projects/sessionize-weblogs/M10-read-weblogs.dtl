@@ -1,5 +1,9 @@
     /* This task reads apache weblog records, assigns a Hadoop partition number, and normalizes the timestamp to be in Coordinated Universal Time (UTC) */
 /DTL
+    /TASKDOCUMENTATION TITLE "Read apache weblog records"
+    AUTHOR "Gregory Grubbs"
+    COMPANY "Syncsort"
+    COMMENTS "Read apache weblog records from DFS, calculate UTC timestamp, assign Hadoop partition number"
     /TASKTYPE SORT
     /KEYS ip, utc-timestamp
     /INFILE ${APACHE_WEBLOGS_DIR}/SAMPLE-access_1.log SERVERCONNECTION HDFSConnection STLF FIELDSEPARATOR " " ENCLOSEDBY """" ENCLOSEDBY "[", "]" LAYOUT apache-weblogs-layout
