@@ -6,26 +6,7 @@
     /DATADICTIONARY filecdc-metadata.dtl DMEXPRESS
     /SERVERCONNECTION "$HDFS_SERVER" HDFS ALIAS HDFSConnection
     /OUTFILE $MAPRED_TEMP_DATA_DIR/MapOutput.txt OVERWRITE STLF FIELDSEPARATOR x"09"
-    /REFORMAT MAPTO LAYOUT MapOutputLayout MAPPINGS
-	MapOutputLayout.PartitionNum = APartitionNum,
-	MapOutputLayout.RecordState = RecordState,
-	MapOutputLayout.L_ORDERKEY = lineitem_delim.L_ORDERKEY,
-	MapOutputLayout.L_PARTKEY = lineitem_delim.L_PARTKEY,
-	MapOutputLayout.L_SUPPKEY = lineitem_delim.L_SUPPKEY,
-	MapOutputLayout.L_LINENUMBER = lineitem_delim.L_LINENUMBER,
-	MapOutputLayout.L_QUANTITY = lineitem_delim.L_QUANTITY,
-	MapOutputLayout.L_EXTENDEDPRICE = lineitem_delim.L_EXTENDEDPRICE,
-	MapOutputLayout.L_DISCOUNT = lineitem_delim.L_DISCOUNT,
-	MapOutputLayout.L_RETURNFLAG = lineitem_delim.L_RETURNFLAG,
-	MapOutputLayout.L_LINESTATUS = lineitem_delim.L_LINESTATUS,
-	MapOutputLayout.field10 = lineitem_delim.field10,
-	MapOutputLayout.L_SHIPDATE = lineitem_delim.L_SHIPDATE,
-	MapOutputLayout.L_COMMITDATE = lineitem_delim.L_COMMITDATE,
-	MapOutputLayout.L_RECEIPTDATE = lineitem_delim.L_RECEIPTDATE,
-	MapOutputLayout.L_SHIPINSTRUCT = lineitem_delim.L_SHIPINSTRUCT,
-	MapOutputLayout.L_SHIPMODE = lineitem_delim.L_SHIPMODE,
-	MapOutputLayout.L_COMMENT = lineitem_delim.L_COMMENT,
-	MapOutputLayout.filler = lineitem_delim.filler
+    /REFORMAT MAPTO LAYOUT MapOutputLayout MAPPINGS MapOutputLayout.PartitionNum = APartitionNum, MapOutputLayout.RecordState = RecordState, MapOutputLayout.L_ORDERKEY = lineitem_delim.L_ORDERKEY, MapOutputLayout.L_PARTKEY = lineitem_delim.L_PARTKEY, MapOutputLayout.L_SUPPKEY = lineitem_delim.L_SUPPKEY, MapOutputLayout.L_LINENUMBER = lineitem_delim.L_LINENUMBER, MapOutputLayout.L_QUANTITY = lineitem_delim.L_QUANTITY, MapOutputLayout.L_EXTENDEDPRICE = lineitem_delim.L_EXTENDEDPRICE, MapOutputLayout.L_DISCOUNT = lineitem_delim.L_DISCOUNT, MapOutputLayout.L_RETURNFLAG = lineitem_delim.L_RETURNFLAG, MapOutputLayout.L_LINESTATUS = lineitem_delim.L_LINESTATUS, MapOutputLayout.field10 = lineitem_delim.field10, MapOutputLayout.L_SHIPDATE = lineitem_delim.L_SHIPDATE, MapOutputLayout.L_COMMITDATE = lineitem_delim.L_COMMITDATE, MapOutputLayout.L_RECEIPTDATE = lineitem_delim.L_RECEIPTDATE, MapOutputLayout.L_SHIPINSTRUCT = lineitem_delim.L_SHIPINSTRUCT, MapOutputLayout.L_SHIPMODE = lineitem_delim.L_SHIPMODE, MapOutputLayout.L_COMMENT = lineitem_delim.L_COMMENT, MapOutputLayout.filler = lineitem_delim.filler
     /COLLATINGSEQUENCE DEFAULT ASCII
     /VALUE ItemFullKey ToText(lineitem_delim.L_ORDERKEY)||"|" ||ToText(lineitem_delim.L_PARTKEY)||"|"||ToText(lineitem_delim.L_SUPPKEY)
     /VALUE RecordState IfThenElse(SourceName() CT "LineItemsPrevious", "P", "C")
