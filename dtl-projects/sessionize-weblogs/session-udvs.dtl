@@ -1,0 +1,15 @@
+/* Definition for User Defined Values used to identify sessions from Apache web logs  */
+/DTL
+    /CONDITION isNewSession ip != GetUserDefinedValue("lastIP") or DateDiff(utc-timestamp, ToDate(GetUserDefinedValue("lastTimestamp"), "YEARMM0DD0 HH0MI0SE0"), "minute") > 45
+    /VALUE getSessionID ToNumber(GetUserDefinedValue("sessionID"))
+    /VALUE incrementSessionID ToNumber(SetUserDefinedValue("sessionID", getSessionID + 1))
+    /VALUE sessionID EvaluateExpressionList(
+    IfThenElse(isNewSession,incrementSessionID,0),
+    setValues,
+    getSessionID
+    )
+    /VALUE setValues EvaluateExpressionList(
+    SetUserDefinedValue("lastIP", ip),
+    SetUserDefinedValue("lastTimestamp", utc-timestamp)
+    )
+/END

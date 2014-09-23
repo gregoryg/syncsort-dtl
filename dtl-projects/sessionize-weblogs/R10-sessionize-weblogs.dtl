@@ -2,6 +2,7 @@
     /TASKTYPE SORT
     /INFILE ${WORKSPACE_DIR}/sorted-logs-by-partition.dat STLF FIELDSEPARATOR X"09" LAYOUT sorted-logs-by-partition-layout
     /KEYS ip, utc-timestamp
+    /DATADICTIONARY session-udvs.dtl DMEXPRESS
     /DELIMITEDRECORDLAYOUT sorted-logs-by-partition-layout {
 	partition-num EN,
 	ip,
@@ -24,16 +25,4 @@
     country-code
     /COLLATINGSEQUENCE DEFAULT ASCII
     /* Determine if there is a key break (new user == new IP) */ 
-    /CONDITION isNewSession ip != GetUserDefinedValue("lastIP") or DateDiff(utc-timestamp, ToDate(GetUserDefinedValue("lastTimestamp"), "YEARMM0DD0 HH0MI0SE0"), "minute") > 10
-    /VALUE getSessionID ToNumber(GetUserDefinedValue("sessionID"))
-    /VALUE incrementSessionID ToNumber(SetUserDefinedValue("sessionID", getSessionID + 1))
-    /VALUE sessionID EvaluateExpressionList(
-    IfThenElse(isNewSession,incrementSessionID,0),
-    setValues,
-    getSessionID
-    )
-    /VALUE setValues EvaluateExpressionList(
-    SetUserDefinedValue("lastIP", ip),
-    SetUserDefinedValue("lastTimestamp", utc-timestamp)
-    )
 /END
