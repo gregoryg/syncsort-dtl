@@ -1,8 +1,28 @@
+" Licensed to the Apache Software Foundation (ASF) under one
+" or more contributor license agreements.  See the NOTICE file
+" distributed with this work for additional information
+" regarding copyright ownership.  The ASF licenses this file
+" to you under the Apache License, Version 2.0 (the
+" "License"); you may not use this file except in compliance
+" with the License.  You may obtain a copy of the License at
+" 
+"     http://www.apache.org/licenses/LICENSE-2.0
+" 
+" Unless required by applicable law or agreed to in writing, software
+" distributed under the License is distributed on an "AS IS" BASIS,
+" WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+" See the License for the specific language governing permissions and
+" limitations under the License.
+
+
 " Vim syntax file
 " Language:     dtl
 " Maintainer:   auto generated
 " Filenames:    *.dtl
-" To automatically load syntax hilighting for *.dtl files add the lines below to ~/.vimrc
+
+" To setup and automatically load syntax hilighting for *.dtl files 
+" Copy this file into ~./vim/syntax
+" add the lines below to ~/.vimrc
 " syntax enable
 " autocmd BufRead,BufNewFile *.dtl set filetype=dtl
 
@@ -11,13 +31,15 @@ if version < 600
 elseif exists("b:current_syntax")
   finish
 endif
+
 " Always ignore case
 syn case ignore
 
-" Add "/" as a valid part of word 
+" Add "/" and "-" as a valid part of word 
 setlocal iskeyword+=/
+setlocal iskeyword+=-
 
-" General keywords which don't fall into other categories
+" General keywords 
 syn keyword dtlOptionKeyword    /COLLATINGSEQUENCE /CONDITION /CUSTOMTASK
 syn keyword dtlOptionKeyword    /DATADICTIONARY /DATASIZE /DBCOLUMNSEXTRACT
 syn keyword dtlOptionKeyword    /DBCONNECTION /DBDATA /DBINPUT /DBOUTPUT
@@ -152,14 +174,14 @@ syn keyword dtlFunction    Abs CRC32 CharacterLengthOf DateAdd DateDiff
 syn keyword dtlFunction    DateLastDay DatePart Encode EvaluateExpressionList
 syn keyword dtlFunction    Extract FindContainedValue GetExternalFunctionValue
 syn keyword dtlFunction    GetUserDefinedValue IfCompares IfContainsAny
-syn keyword dtlFunction    IfEqualsAny IfMatches IfRecordJoined IfRecordOrigin
-syn keyword dtlFunction    IfThenElse InString IsSubcubeRecord IsValidDate
-syn keyword dtlFunction    IsValidNumber LengthOf Lookup MD5 Mod Pad Pow Rand
-syn keyword dtlFunction    RegExReplace Replace Round SetUserDefinedValue
-syn keyword dtlFunction    SourceFullName SourceName Sqrt Substring
-syn keyword dtlFunction    TargetRecordNumber ToChar ToDate ToFile ToLower
-syn keyword dtlFunction    ToNumber ToText ToUpper Today Translate Trim Truncate
-syn keyword dtlFunction    URLDecode
+syn keyword dtlFunction    IfEqualsAny IfMatches IfNull IfRecordJoined
+syn keyword dtlFunction    IfRecordOrigin IfThenElse InString IsSubcubeRecord
+syn keyword dtlFunction    IsValidDate IsValidNumber LengthOf Lookup MD5 Mod Pad
+syn keyword dtlFunction    Pow Rand RegExReplace Replace Round
+syn keyword dtlFunction    SetUserDefinedValue SourceFullName SourceName Sqrt
+syn keyword dtlFunction    Substring TargetRecordNumber ToChar ToDate ToFile
+syn keyword dtlFunction    ToLower ToNumber ToText ToUpper Today Translate Trim
+syn keyword dtlFunction    Truncate URLDecode
 
 " Strings (single- and double-quote)
 syn region dtlString           start=+"+  skip=+\\\\\|\\"+  end=+"+
@@ -189,3 +211,4 @@ if version >= 508 || !exists("did_dtl_syn_inits")
 endif 
 
 let b:current_syntax = "dtl"
+
