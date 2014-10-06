@@ -7,7 +7,11 @@
 * Files
 ** dtl-projects
    Example DTL projects showing various ETL processes.  Separate README in that directory.
-** emacs/dtl-mode/dtl-mode.el
+** Emacs DTL Mode emacs/dtl-mode/dtl-mode.el
+*** Files
+    + emacs/dtl-mode/dtl-mode.el: Emacs dtl-mode
+    + emacs/dtl-mode/dtl-mode.dict: dictionary of commands and keywords for DTL for use
+      with and auto-completion package
 *** Mode capabilities
   This mode provides syntax highlighting for DTL commands, keywords, task types, and
   environment variables.  It implements automatic indentation.  It allows the user to run
@@ -28,7 +32,7 @@
 
   When you want to run the job or task, type =C-c C-c=
   
-** emacs/dtl-mode/dtl-mode.dict
+*** emacs/dtl-mode/dtl-mode.dict
    A dictionary of commands, keywords and functions to use with the auto-complete
    package. 
 
@@ -45,7 +49,7 @@
                    (auto-complete-mode 1))))
      
    #+END_SRC
-** emacs/snippets
+*** emacs/snippets
    The emacs/snippets directory contains several snippets for use with the yasnippet.el
    package.
 
@@ -57,5 +61,19 @@
                (when (require 'yasnippet nil t)
                  (yas-minor-mode 1)))
    #+END_SRC
+** VIM syntax highlighting
+*** Files: vim/syntax/dtl.vim
+    To setup and automatically load syntax hilighting for *.dtl files, copy this file into =~./vim/syntax=
+
+    Add the lines below to =~/.vimrc=
+#+BEGIN_SRC shell
+  syntax enable
+  autocmd BufRead,BufNewFile *.dtl set filetype=dtl
+#+END_SRC
+** Notepad++ syntax highlighting
+*** Files: npp/dtl.xml
+
+    For Notepad++ on Windows.  Import =dtl.xml= using Language -> Define your language -> Import
+
 * Future enhancements
   + I welcome contributions, please send me a message if you would like to help.
