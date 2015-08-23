@@ -1,0 +1,22 @@
+/DTL
+    /TASK FILE M10-read-logs-and-refs.dtl
+    /* /CUSTOMTASK ALIAS M20-logs-JSONReader EXECUTABLE /bin/cat  */
+    /* /CUSTOMTASK ALIAS M22-refs-JSONReader EXECUTABLE /bin/cat  */
+    /TASK FILE M20-logs-json-to-csv.dtl
+    /TASK FILE M22-refs-json-to-csv.dtl
+    /TASK FILE M30-logs-csv-filter.dtl
+    /TASK FILE M32-refs-csv-filter.dtl
+    /TASK FILE M90-partitioner.dtl
+    /TASK FILE R10-demultiplex.dtl
+    /TASK FILE R20-enrich-log.dtl
+    /FLOW M10-read-logs-and-refs.dtl M20-logs-json-to-csv.dtl
+    /FLOW M10-read-logs-and-refs.dtl M22-refs-json-to-csv.dtl
+    /* /FLOW M20-logs-JSONReader M30-logs-csv-filter.dtl */
+    /* /FLOW M22-refs-JSONReader M32-refs-csv-filter.dtl */
+    /FLOW M20-logs-json-to-csv.dtl M30-logs-csv-filter.dtl
+    /FLOW M22-refs-json-to-csv.dtl M32-refs-csv-filter.dtl
+    /FLOW M30-logs-csv-filter.dtl M90-partitioner.dtl
+    /FLOW M32-refs-csv-filter.dtl M90-partitioner.dtl
+    /MAPREDUCE FLOW  M90-partitioner.dtl R10-demultiplex.dtl
+    /FLOW R10-demultiplex.dtl R20-enrich-log.dtl
+/END
