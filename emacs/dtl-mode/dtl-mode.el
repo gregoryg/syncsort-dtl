@@ -23,7 +23,7 @@
 ;; limitations under the License.
 ;;
 ;;; Commentary:
-;; 
+;;
 ;; Syncsort DTL mode
 
 ;;; Code:
@@ -156,10 +156,10 @@
 ;;;###autoload
 (defvar dtl-mode-syntax-table
   (let ((dtl-mode-syntax-table (make-syntax-table)))
-    
+
 					; This is added so entity names with underscores can be more easily parsed
     (modify-syntax-entry ?_ "w" dtl-mode-syntax-table)
-    
+
     ;; 					; Comment styles are same as C++
     ;; (modify-syntax-entry ?/ ". 124b" dtl-mode-syntax-table)
     ;; (modify-syntax-entry ?* ". 23" dtl-mode-syntax-table)
@@ -210,7 +210,7 @@
   (set (make-local-variable 'comment-end) "*/")
   ;; set up compilation buffer to run DTL jobs and tasks
   (require 'compile)
-  (require 'cl) ;; needed for 'pushnew'
+  (require 'cl-lib) ;; needed for 'pushnew'
   (pushnew '(dtl "^DMExpress : (\\([A-Z]+\\))\\|at line \\([0-9]+\\) of \\(.+\\)" 3 2) compilation-error-regexp-alist-alist)
   (pushnew 'dtl compilation-error-regexp-alist)
   (setq major-mode 'dtl-mode)
